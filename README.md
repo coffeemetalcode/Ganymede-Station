@@ -1,2 +1,4 @@
 # Train-Schedule
-Enter and display train schedule info
+Ganymede Station Master Schdule
+
+Terminal display of vessels to all ports on Ganymede Station. The Station Administrator can add schedules to the master schdule. 

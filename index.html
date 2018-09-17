@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- pull Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+
+  <!-- pull JQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- pull local CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <title>New Project</title>
+</head>
+
+<body>
+
+  <div class="jumbotron">
+    <h1>Ganymede Statioin Master Schedule</h1>
+    <h2>Check Below for Next Arrivals</h2>
+  </div>
+
+  <br>
+
+  <div id="display-table">
+    <table class="table">
+      <thead>
+        <div class=t-label>Current Terminal Schedule</div>
+        <tr>
+          <th scope="col">Vessel Name</th>
+          <th scope="col">Destination</th>
+          <th scope="col">Frequency (hh:mm)</th>
+          <th scope="col">Next Arrival</th>
+          <th scope="col">Time Remaining (hh:mm)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Somnambulist</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <br>
+
+  <div id="add-schedule">
+    <form class="form">
+      <div class=t-label>Add a Schedule</div>
+      <div class="i-name">Vessel Name</div>
+      <input name="vessel-name" type="text" placeholder="Enter Vessel Name">
+      <div class="i-name">Destination</div>
+      <input name="vessel-destination" type="text" placeholder="Enter Destination">
+      <div class="i-name">First Arrival Time (hh:mm - military time)</div>
+      <input name="v-first-arrival" type="text" placeholder="HH:MM">
+      <div class="i-name">Frequency (hh:mm)</div>
+      <input name="v-frequency" type="text" placeholder="HH:MM">
+      <button type="button" class="btn btn-secondary">Submit</button>
+    </form>
+  </div>
+
+  <!-- pull local JavaScript -->
+  <script src="assets/javascript/javascript.js"></script>
+</body>
+
+</html>
