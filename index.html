@@ -10,11 +10,14 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
 
-  <!-- pull JQuery -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
   <!-- pull local CSS -->
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- connect Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+
+  <!-- pull JQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <title>Ganymede Station Master Schedule</title>
 </head>
@@ -22,7 +25,7 @@
 <body>
 
   <div class="jumbotron">
-    <h1>Ganymede Statioin Master Schedule</h1>
+    <h1>Ganymede Station Master Schedule</h1>
     <h2>Check Below for Next Arrivals</h2>
   </div>
 
@@ -42,7 +45,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>Somnambulist</td>
+          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -55,22 +58,22 @@
   <br>
 
   <div id="add-schedule">
-    <form class="form">
-      <div class=t-label>Add a Schedule</div>
+    <form id="add-schedule" class="form">
+      <div class=t-label>Add a Schedule (Administrator Only)</div>
       <div class="i-name">Vessel Name</div>
-      <input name="vessel-name" type="text" placeholder="Enter Vessel Name">
+      <input name="v-name" id="v-name" type="text" placeholder="Enter Vessel Name">
       <div class="i-name">Destination</div>
-      <input name="vessel-destination" type="text" placeholder="Enter Destination">
+      <input name="v-destination" id="v-destination" type="text" placeholder="Enter Destination">
       <div class="i-name">First Arrival Time (hh:mm - military time)</div>
-      <input name="v-first-arrival" type="text" placeholder="HH:MM">
+      <input name="v-first-arrival" id="v-first-arrival" type="text" placeholder="HH:MM">
       <div class="i-name">Frequency (hh:mm)</div>
-      <input name="v-frequency" type="text" placeholder="HH:MM">
-      <button type="button" class="btn btn-secondary">Submit</button>
+      <input name="v-frequency" id="v-frequency" type="text" placeholder="HH:MM">
+      <button id="submit" type="button" class="btn btn-secondary">Submit</button>
     </form>
   </div>
 
   <!-- pull local JavaScript -->
-  <script src="assets/javascript/javascript.js"></script>
+  <script src="assets/javascript/ganymede-station.js"></script>
 </body>
 
 </html>

@@ -31,6 +31,7 @@ body {
 
 .table, .form {
   border: 1px solid #6c757d;
+  /* border-radius: 5px; */
 }
 
 .btn {
