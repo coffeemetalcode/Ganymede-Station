@@ -19,6 +19,7 @@ var vFirstArrival = "";
 var vFrequency = "";
 var nArrival = "";
 var tRemaining = "";
+var factor = 153750240000012;
 
 // Using Moment.js to set up scheduler
 
@@ -29,12 +30,20 @@ var currentWeekDay = moment(time).format("dddd");
 var currentDay = moment(time).format("Do");
 var currentYear = moment(time).format("YYYY");
 var expanseYear = parseInt(currentYear) + 340;
-var expanseDate = currentWeekDay + ", " + currentMonth + " " + currentDay + " " + expanseYear;
-var currentTime = moment(time).format("h:mm:ss a");
+var expanseDate =
+  currentWeekDay + ", " + currentMonth + " " + currentDay + " " + expanseYear;
+var currentTime = moment(time).format("HH:mm:ss");
 var expanseDateTime = expanseDate + ", " + currentTime;
 
 console.log("Current Date: " + expanseDateTime);
 console.log("Current Time: " + currentTime);
+
+// having trouble getting the below to work
+// now = function() {
+//   setInterval($("#time-clock").text(expanseDateTime), 1000);
+// };
+
+// now();
 
 $("#time-clock").text(expanseDateTime);
 
@@ -91,8 +100,8 @@ database.ref().on("child_added", function(snapshot) {
     `<td>${entry.vessel}</td>
      <td>${entry.destination}</td>
      <td>${entry.firstArrival}</td>
-     <td>${entry.frequency}</td>
-     <td>To be determinde (moment.js)</td>
+     <td>To be determined (moment.js)</td>
+     <td>To be determined (moment.js)</td>
      `
   );
 
