@@ -1,4 +1,11 @@
 body {
+  /* width: 1080px; */
+  margin: auto;
+  background-image: url("../images/ganymede.jpg");
+  background-size: 100%;
+}
+
+.main {
   width: 1080px;
   margin: auto;
 }
@@ -6,6 +13,11 @@ body {
 .jumbotron {
   margin: auto;
   text-align: center;
+}
+
+.transparent {
+  background-color: white;
+  opacity: 70%; 
 }
 
 .jumbotron h1 {
@@ -18,6 +30,8 @@ body {
 }
 
 .t-label {
+  width: 1070px;
+  margin: auto;
   background-color: #6c757d;
   color: white;
   font-weight: bold;
@@ -30,6 +44,8 @@ body {
 }
 
 .table, .form {
+  width: 1070px;
+  margin: auto;
   border: 1px solid #6c757d;
   /* border-radius: 5px; */
 }
@@ -39,6 +55,6 @@ body {
 }
 
 input {
-  width: 1060px;
+  width: 1055px;
   margin: 5px 0px 5px 7.5px;
 }
