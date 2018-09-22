@@ -16,8 +16,10 @@ body {
 }
 
 .transparent {
-  background-color: white;
-  opacity: 70%; 
+  color: white;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.125);
+  /* opacity: 70%;  */
 }
 
 .jumbotron h1 {
@@ -50,6 +52,11 @@ body {
   /* border-radius: 5px; */
 }
 
+.scroll-div {
+  height: 200px;
+  overflow: auto;
+}
+
 .btn {
   margin: 5px 5px 5px 7.5px;
 }
@@ -57,4 +64,6 @@ body {
 input {
   width: 1055px;
   margin: 5px 0px 5px 7.5px;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.50);
 }

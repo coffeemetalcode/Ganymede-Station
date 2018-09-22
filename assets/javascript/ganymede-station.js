@@ -38,6 +38,20 @@ var expanseDateTime = expanseDate + ", " + currentTime;
 console.log("Current Date: " + expanseDateTime);
 console.log("Current Time: " + currentTime);
 
+var second;
+
+function now() {
+  var second = setInterval(timeClock, 1000);
+}
+
+function timeClock() {
+  $("#time-clock").text(expanseDateTime);
+}
+
+$(document).ready(function() {
+  now();
+});
+
 // having trouble getting the below to work
 // now = function() {
 //   setInterval($("#time-clock").text(expanseDateTime), 1000);
@@ -45,7 +59,7 @@ console.log("Current Time: " + currentTime);
 
 // now();
 
-$("#time-clock").text(expanseDateTime);
+// $("#time-clock").text(expanseDateTime);
 
 $("#submit").on("click", function() {
   // clear form
@@ -95,16 +109,35 @@ database.ref().on("child_added", function(snapshot) {
   console.log(entry.firstArrival);
   console.log(entry.frequency);
 
+  // Time Administration
+  var sFrequency = entry.frequency;
+  var cFirstArrival = moment(entry.firstArrival, "hh:mm").subtract(1, "years");
+  console.log("first: " + moment(cFirstArrival).format("HH:mm"));
+  console.log("first: " + cFirstArrival);
+  currentTime = moment();
+  diffTime = moment().diff(moment(cFirstArrival), "minutes");
+  remainder = diffTime % sFrequency;
+  tRemaining = sFrequency - remainder;
+  fRemaining = moment(tRemaining, "HH:mm").format("HH:mm");
+  console.log("remaining: " + fRemaining);
+  nArrival = moment().add(tRemaining, "minutes");
+  fArrival = moment(nArrival).format("HH:mm");
+  console.log("next: " + moment(fArrival, "HH:mm").format("HH:mm"));
+
+
+  // Display updated data
   var nRow = $("<tr>");
   var nCell = $(
     `<td>${entry.vessel}</td>
      <td>${entry.destination}</td>
-     <td>${entry.firstArrival}</td>
-     <td>To be determined (moment.js)</td>
-     <td>To be determined (moment.js)</td>
+     <td>${sFrequency}</td>
+     <td>${fArrival}</td>
+     <td>${fRemaining}</td>
      `
   );
 
   $("#entries").append(nRow);
   $(nRow).append(nCell);
 });
+
+// Still searching for the moment.js love. And, really would like to have the time in jubotron automatically tick on the second.
