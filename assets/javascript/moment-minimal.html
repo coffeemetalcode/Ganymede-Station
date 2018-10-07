@@ -21,14 +21,16 @@
   <script>
 
     // Assumptions
-    var tFrequency = 3;
+    var tFrequency = '00:03';
+    var momentFrequency = moment.duration(tFrequency).asMinutes();
+    console.log("Frequency: " + momentFrequency);
 
     // Time is 3:30 AM
     var firstTime = "03:30";
 
     // First Time (pushed back 1 year to make sure it comes before current time)
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-    console.log(firstTimeConverted);
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "year");
+    // console.log(firstTimeConverted);
 
     // Current Time
     var currentTime = moment();
@@ -39,16 +41,28 @@
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
-    var tRemainder = diffTime % tFrequency;
-    console.log(tRemainder);
+    var tRemainder = diffTime % momentFrequency;
+    console.log("Remainder: " + tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = tFrequency - tRemainder;
+    var tMinutesTillTrain = momentFrequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+    // var dur = "02:00";
+    // var currentTime = moment();
+    // var durMinutes = moment.duration(dur).asMinutes();
+    // console.log("Two hours rendered in minutes: " + durMinutes);
+
+    // var timePlus = currentTime + durMinutes;
+    // console.log(timePlus);
+
+    // var timePlusConverted = moment(timePlus).format('hh:mm');
+    // console.log(timePlusConverted);
+
 
   </script>
 </body>

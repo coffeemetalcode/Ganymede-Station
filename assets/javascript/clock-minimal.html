@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Clock Minimal</title>
+
+  <!-- pull JQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- pull Moment.js -->
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+</head>
+
+<body>
+  <h1>Check the Console!</h1>
+  <p id="current"></p>
+
+  <script>
+    // var now = setInterval(timeStamp, 1000);
+
+    // function timeStamp() {
+    //   // var d = new Date();
+    //   // var t = d.toLocaleTimeString();
+    //   currentTime = moment().format('MMMM Do YYYY, HH:mm:ss');
+    //   document.getElementById("current").innerHTML = currentTime;
+    // }
+
+    var sFreq = "03:01";
+    console.log("Frequency in Minutes: " + moment.duration(sFreq).asMinutes());
+
+    var fTime = "22:00";
+
+    var currentTime = moment();
+    // var currentTime = moment("20:05", 'HH:mm');
+
+    console.log("Current:" + moment(currentTime).format('MMMM Do YYYY, HH:mm'));
+
+    var futureTime = moment("23:50", 'HH:mm');
+    console.log("Future: " + moment(futureTime, 'HH:mm').format('MMMM Do YYYY, HH:mm'));
+
+    var futureTimeConv = moment(futureTime, "HH:mm").subtract(1, "year");
+    console.log("Future Converted: " + moment(futureTimeConv).format('MMMM Do YYYY, HH:mm'));
+
+    // var diff = currentTime.diff(moment(futureTime), 'minutes');
+    // console.log("Difference: " + Math.abs(diff));
+
+    var diff = currentTime.diff(moment(futureTimeConv), 'minutes');
+    console.log("Difference " + moment(diff), "minutes");
+
+    var tRemainder = diff % sFreq;
+    console.log("Remainder :" + tRemainder);
+
+  </script>
+</body>
+
+</html>

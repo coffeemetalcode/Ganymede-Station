@@ -7,10 +7,27 @@ var config = {
   storageBucket: "ganymede-station.appspot.com",
   messagingSenderId: "918415747120"
 };
+
 firebase.initializeApp(config);
 
 // set variable to refernce firebase
 var database = firebase.database();
+
+// Using Moment.js to set up scheduler
+
+var expanseTime;
+var now = setInterval(timeStamp, 1000);
+
+// Roll time in the jumbotron
+function timeStamp() {
+  currentTime = moment();
+  expanseTime = moment(currentTime)
+    .add(340, "year")
+    .format("MMMM Do YYYY, HH:mm:ss");
+  $("#time-clock").html(expanseTime);
+}
+
+var second;
 
 // variables for temporary schedule info
 var vesssel = "";
@@ -19,47 +36,6 @@ var vFirstArrival = "";
 var vFrequency = "";
 var nArrival = "";
 var tRemaining = "";
-var factor = 153750240000012;
-
-// Using Moment.js to set up scheduler
-
-// construct time display
-var time = moment();
-var currentMonth = moment(time).format("MMMM");
-var currentWeekDay = moment(time).format("dddd");
-var currentDay = moment(time).format("Do");
-var currentYear = moment(time).format("YYYY");
-var expanseYear = parseInt(currentYear) + 340;
-var expanseDate =
-  currentWeekDay + ", " + currentMonth + " " + currentDay + " " + expanseYear;
-var currentTime = moment(time).format("HH:mm:ss");
-var expanseDateTime = expanseDate + ", " + currentTime;
-
-console.log("Current Date: " + expanseDateTime);
-console.log("Current Time: " + currentTime);
-
-var second;
-
-function now() {
-  var second = setInterval(timeClock, 1000);
-}
-
-function timeClock() {
-  $("#time-clock").text(expanseDateTime);
-}
-
-$(document).ready(function() {
-  now();
-});
-
-// having trouble getting the below to work
-// now = function() {
-//   setInterval($("#time-clock").text(expanseDateTime), 1000);
-// };
-
-// now();
-
-// $("#time-clock").text(expanseDateTime);
 
 $("#submit").on("click", function() {
   // clear form
@@ -83,7 +59,6 @@ $("#submit").on("click", function() {
   vFrequency = $("#v-frequency")
     .val()
     .trim();
-  // nArrival = vFirstArrival + vFrequency; I'll need moment.js to do these calculations
 
   console.log("New Vessel Name: " + vessel);
   console.log("New Destination: " + vDestination);
@@ -95,7 +70,9 @@ $("#submit").on("click", function() {
     vessel: vessel,
     destination: vDestination,
     firstArrival: vFirstArrival,
-    frequency: vFrequency
+    frequency: vFrequency,
+    // nextArrival: nArrival,
+    // timeRemaining: tRemaining
   });
   clearForm();
 });
@@ -104,35 +81,37 @@ $("#submit").on("click", function() {
 database.ref().on("child_added", function(snapshot) {
   var entry = snapshot.val();
 
-  console.log(entry.vessel);
-  console.log(entry.destination);
-  console.log(entry.firstArrival);
-  console.log(entry.frequency);
+  var firstArrival = entry.firstArrival;
+  console.log(`Ship's first arrival is at ${firstArrival}`);
 
-  // Time Administration
-  var sFrequency = entry.frequency;
-  var cFirstArrival = moment(entry.firstArrival, "hh:mm").subtract(1, "years");
-  console.log("first: " + moment(cFirstArrival).format("HH:mm"));
-  console.log("first: " + cFirstArrival);
-  currentTime = moment();
-  diffTime = moment().diff(moment(cFirstArrival), "minutes");
-  remainder = diffTime % sFrequency;
-  tRemaining = sFrequency - remainder;
-  fRemaining = moment(tRemaining, "HH:mm").format("HH:mm");
-  console.log("remaining: " + fRemaining);
-  nArrival = moment().add(tRemaining, "minutes");
-  fArrival = moment(nArrival).format("HH:mm");
-  console.log("next: " + moment(fArrival, "HH:mm").format("HH:mm"));
+  var convertedFirstArrival = moment(firstArrival, "HH:mm").subtract(1, "year");
 
+  var frequency = moment.duration(entry.frequency).asMinutes();
+  console.log(`Ship arrives every ${frequency} minutes.`);
+
+  var thisMoment = moment();
+  console.log(`Current Station Time: ${moment(thisMoment).format("HH:mm")}`);
+
+  var diff = moment().diff(moment(convertedFirstArrival), 'minutes');
+  console.log(`Time Difference: ${diff}`);
+
+  var remainder = diff % frequency;
+  console.log(`Remainder: ${remainder}`);
+
+  var nextArrivalMinutes = frequency - remainder;
+  console.log(`Minutes Until Next Arrival: ${nextArrivalMinutes}`);
+
+  var nextArrivalTime = moment().add(nextArrivalMinutes, 'minutes');
+  console.log(`Ship's Next Arrival: ${moment(nextArrivalTime).format('HH:mm')}`);
 
   // Display updated data
   var nRow = $("<tr>");
   var nCell = $(
     `<td>${entry.vessel}</td>
      <td>${entry.destination}</td>
-     <td>${sFrequency}</td>
-     <td>${fArrival}</td>
-     <td>${fRemaining}</td>
+     <td>${entry.frequency}</td>
+     <td>${moment(nextArrivalTime).format('HH:mm')}</td>
+     <td>${moment(nextArrivalMinutes).format('hh:mm')}</td>
      `
   );
 
