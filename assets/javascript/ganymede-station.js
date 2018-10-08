@@ -14,7 +14,6 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Using Moment.js to set up scheduler
-
 var expanseTime;
 var now = setInterval(timeStamp, 1000);
 
@@ -26,8 +25,6 @@ function timeStamp() {
     .format("MMMM Do YYYY, HH:mm:ss");
   $("#time-clock").html(expanseTime);
 }
-
-var second;
 
 // variables for temporary schedule info
 var vesssel = "";
@@ -70,13 +67,17 @@ $("#submit").on("click", function() {
     vessel: vessel,
     destination: vDestination,
     firstArrival: vFirstArrival,
-    frequency: vFrequency,
+    frequency: vFrequency
     // nextArrival: nArrival,
     // timeRemaining: tRemaining
   });
   clearForm();
 });
 
+// update display data once every minute // needs tweaking to work properly
+// var update = setInterval(autoUpdate, 1000 * 60);
+
+// function autoUpdate() {
 // display existing data in schdule display
 database.ref().on("child_added", function(snapshot) {
   var entry = snapshot.val();
@@ -87,12 +88,13 @@ database.ref().on("child_added", function(snapshot) {
   var convertedFirstArrival = moment(firstArrival, "HH:mm").subtract(1, "year");
 
   var frequency = moment.duration(entry.frequency).asMinutes();
+  // var frequency = moment.duration(entry.frequency);
   console.log(`Ship arrives every ${frequency} minutes.`);
 
   var thisMoment = moment();
   console.log(`Current Station Time: ${moment(thisMoment).format("HH:mm")}`);
 
-  var diff = moment().diff(moment(convertedFirstArrival), 'minutes');
+  var diff = moment().diff(moment(convertedFirstArrival), "minutes");
   console.log(`Time Difference: ${diff}`);
 
   var remainder = diff % frequency;
@@ -101,22 +103,40 @@ database.ref().on("child_added", function(snapshot) {
   var nextArrivalMinutes = frequency - remainder;
   console.log(`Minutes Until Next Arrival: ${nextArrivalMinutes}`);
 
-  var nextArrivalTime = moment().add(nextArrivalMinutes, 'minutes');
-  console.log(`Ship's Next Arrival: ${moment(nextArrivalTime).format('HH:mm')}`);
+  var nextArrivalHours = hhmm(nextArrivalMinutes);
+  console.log(`Ship's Next Arrival in: ${nextArrivalHours}`);
+
+  var nextArrivalTime = moment().add(nextArrivalMinutes, "minutes");
+  console.log(
+    `Ship's Next Arrival at: ${moment(nextArrivalTime).format("HH:mm")}`
+  );
 
   // Display updated data
   var nRow = $("<tr>");
   var nCell = $(
     `<td>${entry.vessel}</td>
-     <td>${entry.destination}</td>
-     <td>${entry.frequency}</td>
-     <td>${moment(nextArrivalTime).format('HH:mm')}</td>
-     <td>${moment(nextArrivalMinutes).format('hh:mm')}</td>
-     `
+       <td>${entry.destination}</td>
+       <td>${entry.frequency}</td>
+       <td>${moment(nextArrivalTime).format("HH:mm")}</td>
+       <td>${nextArrivalHours}</td>
+      `
   );
 
   $("#entries").append(nRow);
   $(nRow).append(nCell);
 });
+// } // closes the autoUpdate function
 
-// Still searching for the moment.js love. And, really would like to have the time in jubotron automatically tick on the second.
+// functions to format minutes to hh:mm // surprised that moment doesn't handle this natively!
+function pad(num) {
+  return ("0" + num).slice(-2);
+}
+
+function hhmm(minutes) {
+  var hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+  return pad(hours) + ":" + pad(minutes);
+}
+
+// var myMinutes = 121;
+// console.log(hhmm(myMinutes));
