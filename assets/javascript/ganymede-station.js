@@ -140,3 +140,5 @@ function hhmm(minutes) {
 
 // var myMinutes = 121;
 // console.log(hhmm(myMinutes));
+
+// TODO - fix so the table updates with current calculations on the minute.
