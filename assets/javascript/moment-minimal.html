@@ -7,6 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Moment Minimal</title>
 
+  <!-- pull Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+
   <!-- pull JQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -18,55 +24,77 @@
 <body>
   <h1>Check the Console!</h1>
 
+  <div class="t-label">Current Terminal Schedule</div>
+  <div id="display-table" class="transparent scroll-div">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Vessel Name</th>
+          <th scope="col">Destination</th>
+          <th scope="col">Frequency (HH:mm)</th>
+          <!-- <th scope="col">Next Arrival</th>
+          <th scope="col">Time Remaining (HH:mm)</th> -->
+        </tr>
+      </thead>
+      <tbody id="entries">
+        <!-- logic file will populate this space from entries in firebase -->
+      </tbody>
+    </table>
+  </div>
+
   <script>
 
-    // // Assumptions
-    // var tFrequency = '00:03';
-    // var momentFrequency = moment.duration(tFrequency).asMinutes();
-    // console.log("Frequency: " + momentFrequency);
+    var config = {
+      apiKey: "AIzaSyBr7PYXR84QY9No_Dh15D7hWWY2BH7CH9A",
+      authDomain: "ganymede-station.firebaseapp.com",
+      databaseURL: "https://ganymede-station.firebaseio.com",
+      projectId: "ganymede-station",
+      storageBucket: "ganymede-station.appspot.com",
+      messagingSenderId: "918415747120"
+    };
 
-    // // Time is 3:30 AM
-    // var firstTime = "03:30";
+    firebase.initializeApp(config);
 
-    // // First Time (pushed back 1 year to make sure it comes before current time)
-    // var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "year");
-    // // console.log(firstTimeConverted);
+    // set variable to refernce firebase
+    var database = firebase.database();
 
-    // // Current Time
-    // var currentTime = moment();
-    // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+    // var update = setInterval(autoUpdate, 1000 * 5);
 
-    // // Difference between the times
-    // var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-    // console.log("DIFFERENCE IN TIME: " + diffTime);
+    // function autoUpdate() {
+    database.ref().on("child_added", function (snapshot) {
+      var entry = snapshot.val();
 
-    // // Time apart (remainder)
-    // var tRemainder = diffTime % momentFrequency;
-    // console.log("Remainder: " + tRemainder);
+      // Display updated data
+      var nRow = $("<tr>");
+      var nCell = $(
+        `<td>${entry.vessel}</td>
+           <td>${entry.destination}</td>
+           <td>${entry.frequency}</td>
+          `
+      );
 
-    // // Minute Until Train
-    // var tMinutesTillTrain = momentFrequency - tRemainder;
-    // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+      populate();
 
-    // // Next Train
-    // var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+      function populate() {
+        $("#entries").append(nRow);
+        $(nRow).append(nCell);
+      }
 
-    // var dur = "02:00";
-    // var currentTime = moment();
-    // var durMinutes = moment.duration(dur).asMinutes();
-    // console.log("Two hours rendered in minutes: " + durMinutes);
+      setInterval(populate, 1000 * 5);
 
-    // var timePlus = currentTime + durMinutes;
-    // console.log(timePlus);
+      // function autoUpdate() {
+      //   // for (entry in entries) {
+      //   //   var entry = snapshot.val();
+      //   $("#entries").append(nRow);
+      //   $(nRow).append(nCell);
+      // }
+      // }
 
-    // var timePlusConverted = moment(timePlus).format('hh:mm');
-    // console.log(timePlusConverted);
+    });
 
-    var seconds = 3820;
-    var duration = moment.duration(seconds, 'seconds');
-    var formatted = duration.format("hh:mm:ss");
-    console.log(formatted);
+
+    // }
+
   </script>
 </body>
 

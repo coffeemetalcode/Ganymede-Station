@@ -113,17 +113,23 @@ database.ref().on("child_added", function(snapshot) {
 
   // Display updated data
   var nRow = $("<tr>");
-  var nCell = $(
-    `<td>${entry.vessel}</td>
-       <td>${entry.destination}</td>
-       <td>${entry.frequency}</td>
-       <td>${moment(nextArrivalTime).format("HH:mm")}</td>
-       <td>${nextArrivalHours}</td>
-      `
-  );
+  var nCell = $(`
+    <td>${entry.vessel}</td>
+    <td>${entry.destination}</td>
+    <td>${entry.frequency}</td>
+    <td>${moment(nextArrivalTime).format("HH:mm")}</td>
+    <td>${nextArrivalHours}</td>
+  `);
 
-  $("#entries").append(nRow);
-  $(nRow).append(nCell);
+  populate();
+
+  function populate() {
+    $("#entries").append(nRow);
+    $(nRow).append(nCell);
+    console.log("banana");
+  }
+
+  setInterval(populate, 1000 * 5);
 });
 // } // closes the autoUpdate function
 
